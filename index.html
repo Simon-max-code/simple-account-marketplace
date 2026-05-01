@@ -16,20 +16,20 @@
             <div class="nav-links">
                 <a href="index.html">Marketplace</a>
                 <a href="orders.html">Track Orders</a>
-                <a href="#" onclick="showToast('Support is currently offline')">Support</a>
+                <a href="#" onclick="showToast('Support is currently offline'); return false;">Support</a>
             </div>
         </div>
     </nav>
 
     <main class="container">
-        <header style="margin-top: 60px; text-align: center;">
+        <header style="margin-top: 80px; text-align: center; margin-bottom: 60px;">
             <div class="typewriter-container">
                 <span class="typewriter-text" data-words='["Get Instant Access", "Verified Accounts Only", "Safe & Secure Trading", "24/7 Support Available"]'></span>
             </div>
-            <h1>Premium Digital Assets</h1>
-            <p style="color: var(--text-muted); max-width: 600px; margin: 10px auto;">
+            <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; color: var(--text-main);">Premium Digital Assets</h1>
+            <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto; font-size: 1.05rem; line-height: 1.7;">
                 The most trusted platform for high-quality digital accounts and social media assets. 
-                Join over 10,000+ satisfied customers today.
+                Join over 10,000+ satisfied customers today and get instant access to verified accounts.
             </p>
         </header>
 
@@ -38,32 +38,61 @@
             <!-- Accounts injected by app.js -->
         </div>
 
-        <h2 class="section-title">Platform Statistics</h2>
+        <h2 class="section-title">Why Choose AccountMarket?</h2>
         <div class="stats-grid">
             <div class="stat-card">
+                <div style="font-size: 2rem; margin-bottom: 12px;">✓</div>
                 <div class="stat-value">12.5K</div>
                 <div class="stat-label">Successful Trades</div>
             </div>
             <div class="stat-card">
+                <div style="font-size: 2rem; margin-bottom: 12px;">⭐</div>
                 <div class="stat-value">99.9%</div>
                 <div class="stat-label">Satisfaction Rate</div>
             </div>
             <div class="stat-card">
+                <div style="font-size: 2rem; margin-bottom: 12px;">🕐</div>
                 <div class="stat-value">24/7</div>
                 <div class="stat-label">Active Support</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">< 5m</div>
+                <div style="font-size: 2rem; margin-bottom: 12px;">⚡</div>
+                <div class="stat-value">&lt; 5m</div>
                 <div class="stat-label">Delivery Time</div>
             </div>
         </div>
 
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-muted); font-size: 0.8rem;">
+        <h2 class="section-title">How It Works</h2>
+        <div class="stats-grid" style="margin-bottom: 80px;">
+            <div class="stat-card" style="text-align: left;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;">1</div>
+                <h3 style="font-weight: 600; margin-bottom: 8px; color: var(--text-main);">Browse & Select</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Explore our marketplace and find the perfect account for your needs.</p>
+            </div>
+            <div class="stat-card" style="text-align: left;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;">2</div>
+                <h3 style="font-weight: 600; margin-bottom: 8px; color: var(--text-main);">Secure Payment</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Complete your purchase with our secure payment methods.</p>
+            </div>
+            <div class="stat-card" style="text-align: left;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;">3</div>
+                <h3 style="font-weight: 600; margin-bottom: 8px; color: var(--text-main);">Instant Delivery</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Receive your credentials instantly after verification.</p>
+            </div>
+            <div class="stat-card" style="text-align: left;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;">4</div>
+                <h3 style="font-weight: 600; margin-bottom: 8px; color: var(--text-main);">Full Support</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Get 24/7 support if you need any assistance.</p>
+            </div>
+        </div>
+
+        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-muted); font-size: 0.85rem;">
             <p>&copy; 2026 AccountMarket MVP. For demonstration purposes only.</p>
-            <div style="margin-top: 10px; display: flex; justify-content: center; gap: 20px;">
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <a href="#">Terms of Service</a>
                 <a href="#">Privacy Policy</a>
                 <a href="#">Refund Policy</a>
+                <a href="#">Contact Us</a>
             </div>
         </footer>
     </main>

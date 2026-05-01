@@ -9,29 +9,38 @@
 <body>
     <div class="bg-glow-1"></div>
     <div class="bg-glow-2"></div>
+    
     <nav>
         <div class="container">
             <a href="index.html" class="logo">AccountMarket</a>
             <div class="nav-links">
                 <a href="index.html">Browse</a>
                 <a href="orders.html">My Orders</a>
+                <a href="#" onclick="showToast('Support is currently offline'); return false;">Support</a>
             </div>
         </div>
     </nav>
 
     <main class="container">
         <div class="checkout-box">
-            <h2 style="margin-bottom: 25px;">Order Summary</h2>
+            <h2>Order Summary</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Review your purchase before proceeding to payment</p>
+            
             <div id="summary-content">
                 <!-- Summary will be injected here -->
             </div>
             
-            <button onclick="window.location.href='payment.html'" class="btn" style="margin-top: 20px;">Proceed to Payment</button>
-            <button onclick="window.history.back()" class="btn btn-secondary" style="margin-top: 10px;">Back</button>
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button onclick="window.location.href='payment.html'" class="btn" style="flex: 1;">Continue to Payment</button>
+                <button onclick="window.history.back()" class="btn" style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: var(--text-muted);">← Back</button>
+            </div>
         </div>
     </main>
 
+    <div id="toast-container"></div>
+
     <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const accountId = parseInt(localStorage.getItem('selected_account_id'));
@@ -48,12 +57,12 @@
             const summaryContent = document.getElementById('summary-content');
             summaryContent.innerHTML = `
                 <div class="checkout-row">
-                    <span>${account.title}</span>
-                    <span>$${account.price}</span>
+                    <span style="color: var(--text-main);">${account.title}</span>
+                    <span style="color: var(--text-main); font-weight: 600;">$${account.price}</span>
                 </div>
                 <div class="checkout-row">
-                    <span>Platform Fee (5%)</span>
-                    <span>$${fee}</span>
+                    <span style="color: var(--text-muted);">Platform Fee (5%)</span>
+                    <span style="color: var(--text-muted);">$${fee}</span>
                 </div>
                 <div class="checkout-row total-row">
                     <span>Total Amount</span>
@@ -62,6 +71,7 @@
             `;
             
             localStorage.setItem('last_total', total);
+            showToast('Order summary loaded ✓', 'success');
         });
     </script>
 </body>

@@ -5,46 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders | AccountMarket</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-awaiting {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--warning);
+        }
+
+        .status-confirmed {
+            background: rgba(167, 139, 250, 0.2);
+            color: var(--primary);
+        }
+
+        .status-released {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .orders-table {
+                font-size: 0.85rem;
+            }
+
+            .orders-table th,
+            .orders-table td {
+                padding: 12px 8px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="bg-glow-1"></div>
     <div class="bg-glow-2"></div>
+    
     <nav>
         <div class="container">
             <a href="index.html" class="logo">AccountMarket</a>
             <div class="nav-links">
                 <a href="index.html">Browse</a>
                 <a href="orders.html">My Orders</a>
+                <a href="#" onclick="showToast('Support is currently offline'); return false;">Support</a>
             </div>
         </div>
     </nav>
 
     <main class="container">
-        <header style="margin-top: 40px;">
-            <h1>My Orders</h1>
-            <p style="color: var(--text-muted);">Manage your account purchases and track verification.</p>
+        <header style="margin-top: 50px; margin-bottom: 40px;">
+            <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 10px;">My Orders</h1>
+            <p style="color: var(--text-muted); font-size: 1rem;">Track your purchases and manage your accounts</p>
         </header>
 
-        <table class="orders-table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Account</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="orders-list">
-                <!-- Orders will be injected here -->
-            </tbody>
-        </table>
+        <div style="overflow-x: auto;">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Account</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-list">
+                    <!-- Orders will be injected here -->
+                </tbody>
+            </table>
+        </div>
         
-        <div id="no-orders" style="display: none; text-align: center; margin-top: 50px;">
-            <p>You haven't placed any orders yet.</p>
-            <a href="index.html" class="btn" style="width: auto; margin-top: 20px; display: inline-block;">Start Browsing</a>
+        <div id="no-orders" style="display: none; text-align: center; margin-top: 80px; padding: 60px 20px;">
+            <div style="font-size: 3rem; margin-bottom: 20px;">📦</div>
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">No Orders Yet</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">You haven't placed any orders. Start browsing our marketplace!</p>
+            <a href="index.html" class="btn" style="width: auto; display: inline-block; padding: 12px 28px;">← Back to Marketplace</a>
         </div>
     </main>
+
+    <div id="toast-container"></div>
 
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
@@ -63,23 +113,31 @@
             emptyState.style.display = 'none';
             list.innerHTML = orders.map(order => {
                 const account = accounts.find(a => a.id === order.accountId);
-                const statusClass = order.status.replace('awaiting_verification', 'status-awaiting')
-                                               .replace('payment_confirmed', 'status-confirmed')
-                                               .replace('credentials_released', 'status-released');
+                
+                let statusClass = 'status-awaiting';
+                let statusText = 'Awaiting Verification';
+                
+                if (order.status === 'payment_confirmed') {
+                    statusClass = 'status-confirmed';
+                    statusText = 'Payment Confirmed';
+                } else if (order.status === 'credentials_released') {
+                    statusClass = 'status-released';
+                    statusText = 'Credentials Released';
+                }
                 
                 let actionBtn = '';
                 if (order.status === 'credentials_released') {
-                    actionBtn = `<a href="credentials.html?orderId=${order.id}" class="btn" style="padding: 5px 15px; font-size: 0.9rem;">View Credentials</a>`;
+                    actionBtn = `<a href="credentials.html?orderId=${order.id}" class="btn" style="padding: 8px 16px; font-size: 0.85rem;">View Credentials</a>`;
                 } else {
-                    actionBtn = `<span style="color: var(--text-muted); font-size: 0.9rem;">Processing...</span>`;
+                    actionBtn = `<span style="color: var(--text-muted); font-size: 0.85rem;">⏳ Processing...</span>`;
                 }
 
                 return `
                     <tr>
-                        <td>${order.id}</td>
+                        <td style="font-family: 'Courier New', monospace; font-weight: 600;">${order.id}</td>
                         <td>${account ? account.title : 'Unknown'}</td>
-                        <td>$${account ? account.price : '0'}</td>
-                        <td><span class="status-badge ${statusClass}">${order.status.replace('_', ' ')}</span></td>
+                        <td style="font-weight: 600; color: var(--primary);">$${account ? account.price : '0'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                         <td>${actionBtn}</td>
                     </tr>
                 `;
@@ -108,7 +166,7 @@
             if (changed) {
                 localStorage.setItem('orders', JSON.stringify(orders));
                 renderOrders();
-                showToast('An order status has been updated!');
+                showToast('✓ Order status updated!', 'success');
             }
         }
 

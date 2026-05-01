@@ -1,4 +1,4 @@
-// Toast Notification System
+// Enhanced Toast Notification System
 function showToast(message, type = 'primary') {
     const container = document.getElementById('toast-container');
     if (!container) {
@@ -9,17 +9,23 @@ function showToast(message, type = 'primary') {
     
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.innerHTML = `<span>${message}</span>`;
+    
+    let icon = '✓';
+    if (type === 'success') icon = '✓';
+    else if (type === 'warning') icon = '⚠';
+    else if (type === 'error') icon = '✕';
+    
+    toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
     document.getElementById('toast-container').appendChild(toast);
     
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(100%)';
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 3500);
 }
 
-// Typewriter Effect
+// Enhanced Typewriter Effect with Cursor Blink
 class TypeWriter {
     constructor(el, words, wait = 3000) {
         this.el = el;
@@ -43,7 +49,7 @@ class TypeWriter {
 
         this.el.innerHTML = `<span class="txt">${this.txt}</span>`;
 
-        let typeSpeed = 100;
+        let typeSpeed = 80;
         if (this.isDeleting) typeSpeed /= 2;
 
         if (!this.isDeleting && this.txt === fullTxt) {
@@ -74,20 +80,33 @@ document.addEventListener('DOMContentLoaded', () => {
         accounts.forEach((account, index) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.style.animationDelay = `${index * 0.1}s`;
+            card.style.animationDelay = `${index * 0.08}s`;
             card.onclick = () => window.location.href = `account.html?id=${account.id}`;
+            
+            const description = account.description || account.features[0];
+            
             card.innerHTML = `
                 <div class="card-img-wrapper">
                     <img src="${account.image}" alt="${account.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=400&h=300&fit=crop'">
                 </div>
                 <div class="card-content">
                     <h3 class="card-title">${account.title}</h3>
+                    <p class="card-description">${description}</p>
                     <p class="card-price">$${account.price}</p>
-                    <button class="btn">Details</button>
+                    <button class="btn">View Details</button>
                 </div>
             `;
             grid.appendChild(card);
         });
-        showToast('Welcome to AccountMarket! Browse our latest deals.');
+        showToast('Welcome to AccountMarket! 🎉 Browse our latest deals.', 'success');
     }
 });
+
+// Copy to Clipboard Helper
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied to clipboard! ✓', 'success');
+    }).catch(() => {
+        showToast('Failed to copy', 'error');
+    });
+}
