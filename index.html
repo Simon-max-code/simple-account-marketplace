@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
     <nav>
         <div class="container">
             <a href="index.html" class="logo">AccountMarket</a>
@@ -39,11 +41,13 @@
                 card.className = 'card';
                 card.onclick = () => window.location.href = `account.html?id=${account.id}`;
                 card.innerHTML = `
-                    <img src="${account.image}" alt="${account.title}" class="card-img">
+                    <div class="card-img-wrapper">
+                        <img src="${account.image}" alt="${account.title}" class="card-img">
+                    </div>
                     <div class="card-content">
                         <h3 class="card-title">${account.title}</h3>
                         <p class="card-price">$${account.price}</p>
-                        <button class="btn">Buy Now</button>
+                        <button class="btn">View Details</button>
                     </div>
                 `;
                 grid.appendChild(card);
