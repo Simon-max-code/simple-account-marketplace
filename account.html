@@ -26,6 +26,7 @@
     </main>
 
     <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -59,7 +60,8 @@
 
         function proceedToCheckout(id) {
             localStorage.setItem('selected_account_id', id);
-            window.location.href = 'checkout.html';
+            showToast('Account selected! Redirecting to checkout...');
+            setTimeout(() => window.location.href = 'checkout.html', 1000);
         }
     </script>
 </body>

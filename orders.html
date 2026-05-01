@@ -47,6 +47,7 @@
     </main>
 
     <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
     <script>
         function renderOrders() {
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
@@ -107,6 +108,7 @@
             if (changed) {
                 localStorage.setItem('orders', JSON.stringify(orders));
                 renderOrders();
+                showToast('An order status has been updated!');
             }
         }
 
