@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details | AccountMarket</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">AccountMarket</a>
+            <div class="nav-links">
+                <a href="index.html">Browse</a>
+                <a href="orders.html">My Orders</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="details-view" class="details-container">
+            <!-- Details will be injected here -->
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const accountId = parseInt(urlParams.get('id'));
+            const account = accounts.find(a => a.id === accountId);
+
+            if (!account) {
+                document.getElementById('details-view').innerHTML = "<h1>Account not found</h1>";
+                return;
+            }
+
+            const detailsView = document.getElementById('details-view');
+            detailsView.innerHTML = `
+                <div>
+                    <img src="${account.image}" alt="${account.title}" class="details-img">
+                </div>
+                <div>
+                    <h1 style="font-size: 2.5rem; margin-bottom: 10px;">${account.title}</h1>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">$${account.price}</p>
+                    
+                    <ul class="features-list">
+                        ${account.features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+
+                    <div style="margin-top: 30px;">
+                        <button onclick="proceedToCheckout(${account.id})" class="btn" style="font-size: 1.1rem; padding: 15px;">Proceed to Buy Now</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        function proceedToCheckout(id) {
+            localStorage.setItem('selected_account_id', id);
+            window.location.href = 'checkout.html';
+        }
+    </script>
+</body>
+</html>

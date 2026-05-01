@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | AccountMarket</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">AccountMarket</a>
+            <div class="nav-links">
+                <a href="index.html">Browse</a>
+                <a href="orders.html">My Orders</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header style="margin-top: 40px;">
+            <h1>My Orders</h1>
+            <p style="color: var(--text-muted);">Manage your account purchases and track verification.</p>
+        </header>
+
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Account</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="orders-list">
+                <!-- Orders will be injected here -->
+            </tbody>
+        </table>
+        
+        <div id="no-orders" style="display: none; text-align: center; margin-top: 50px;">
+            <p>You haven't placed any orders yet.</p>
+            <a href="index.html" class="btn" style="width: auto; margin-top: 20px; display: inline-block;">Start Browsing</a>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        function renderOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const list = document.getElementById('orders-list');
+            const emptyState = document.getElementById('no-orders');
+            
+            if (orders.length === 0) {
+                emptyState.style.display = 'block';
+                list.innerHTML = '';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            list.innerHTML = orders.map(order => {
+                const account = accounts.find(a => a.id === order.accountId);
+                const statusClass = order.status.replace('awaiting_verification', 'status-awaiting')
+                                               .replace('payment_confirmed', 'status-confirmed')
+                                               .replace('credentials_released', 'status-released');
+                
+                let actionBtn = '';
+                if (order.status === 'credentials_released') {
+                    actionBtn = `<a href="credentials.html?orderId=${order.id}" class="btn" style="padding: 5px 15px; font-size: 0.9rem;">View Credentials</a>`;
+                } else {
+                    actionBtn = `<span style="color: var(--text-muted); font-size: 0.9rem;">Processing...</span>`;
+                }
+
+                return `
+                    <tr>
+                        <td>${order.id}</td>
+                        <td>${account ? account.title : 'Unknown'}</td>
+                        <td>$${account ? account.price : '0'}</td>
+                        <td><span class="status-badge ${statusClass}">${order.status.replace('_', ' ')}</span></td>
+                        <td>${actionBtn}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function simulateUpdates() {
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            let changed = false;
+
+            const now = new Date().getTime();
+
+            orders = orders.map(order => {
+                const elapsed = (now - order.timestamp) / 1000;
+                
+                if (order.status === 'awaiting_verification' && elapsed >= 5) {
+                    order.status = 'payment_confirmed';
+                    changed = true;
+                } else if (order.status === 'payment_confirmed' && elapsed >= 8) {
+                    order.status = 'credentials_released';
+                    changed = true;
+                }
+                return order;
+            });
+
+            if (changed) {
+                localStorage.setItem('orders', JSON.stringify(orders));
+                renderOrders();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrders();
+            setInterval(simulateUpdates, 1000);
+        });
+    </script>
+</body>
+</html>

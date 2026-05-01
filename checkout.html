@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | AccountMarket</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">AccountMarket</a>
+            <div class="nav-links">
+                <a href="index.html">Browse</a>
+                <a href="orders.html">My Orders</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="checkout-box">
+            <h2 style="margin-bottom: 25px;">Order Summary</h2>
+            <div id="summary-content">
+                <!-- Summary will be injected here -->
+            </div>
+            
+            <button onclick="window.location.href='payment.html'" class="btn" style="margin-top: 20px;">Proceed to Payment</button>
+            <button onclick="window.history.back()" class="btn btn-secondary" style="margin-top: 10px;">Back</button>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accountId = parseInt(localStorage.getItem('selected_account_id'));
+            const account = accounts.find(a => a.id === accountId);
+
+            if (!account) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const fee = (account.price * 0.05).toFixed(2);
+            const total = (parseFloat(account.price) + parseFloat(fee)).toFixed(2);
+
+            const summaryContent = document.getElementById('summary-content');
+            summaryContent.innerHTML = `
+                <div class="checkout-row">
+                    <span>${account.title}</span>
+                    <span>$${account.price}</span>
+                </div>
+                <div class="checkout-row">
+                    <span>Platform Fee (5%)</span>
+                    <span>$${fee}</span>
+                </div>
+                <div class="checkout-row total-row">
+                    <span>Total Amount</span>
+                    <span>$${total}</span>
+                </div>
+            `;
+            
+            localStorage.setItem('last_total', total);
+        });
+    </script>
+</body>
+</html>

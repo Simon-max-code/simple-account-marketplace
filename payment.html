@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | AccountMarket</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">AccountMarket</a>
+            <div class="nav-links">
+                <a href="index.html">Browse</a>
+                <a href="orders.html">My Orders</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="checkout-box">
+            <h2 style="margin-bottom: 10px;">Complete Payment</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;">Total Due: <strong id="total-display">$0.00</strong></p>
+            
+            <form id="payment-form">
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <div style="display: flex; gap: 15px;">
+                        <label style="font-weight: normal;"><input type="radio" name="method" value="Crypto" checked> Crypto (BTC/ETH)</label>
+                        <label style="font-weight: normal;"><input type="radio" name="method" value="PayPal"> PayPal</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Transaction ID / Reference</label>
+                    <input type="text" id="txid" placeholder="Enter TXID or Reference" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Receipt (Image)</label>
+                    <input type="file" id="receipt" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn">Submit for Verification</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const total = localStorage.getItem('last_total');
+            document.getElementById('total-display').innerText = `$${total}`;
+
+            document.getElementById('payment-form').onsubmit = (e) => {
+                e.preventDefault();
+                
+                const accountId = parseInt(localStorage.getItem('selected_account_id'));
+                const txid = document.getElementById('txid').value;
+                
+                const newOrder = {
+                    id: 'ORD-' + Math.floor(Math.random() * 1000000),
+                    accountId: accountId,
+                    txid: txid,
+                    timestamp: new Date().getTime(),
+                    status: 'awaiting_verification'
+                };
+
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.push(newOrder);
+                localStorage.setItem('orders', JSON.stringify(orders));
+
+                window.location.href = 'orders.html';
+            };
+        });
+    </script>
+</body>
+</html>

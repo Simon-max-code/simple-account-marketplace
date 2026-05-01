@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace | Browse Accounts</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">AccountMarket</a>
+            <div class="nav-links">
+                <a href="index.html">Browse</a>
+                <a href="orders.html">My Orders</a>
+                <div style="width: 32px; height: 32px; background: #ddd; border-radius: 50%;"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header style="margin-top: 40px;">
+            <h1>Browse Accounts</h1>
+            <p style="color: var(--text-muted);">Find the perfect digital account for your needs.</p>
+        </header>
+
+        <div id="accounts-grid" class="grid">
+            <!-- Accounts will be injected here by app.js -->
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('accounts-grid');
+            accounts.forEach(account => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => window.location.href = `account.html?id=${account.id}`;
+                card.innerHTML = `
+                    <img src="${account.image}" alt="${account.title}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${account.title}</h3>
+                        <p class="card-price">$${account.price}</p>
+                        <button class="btn">Buy Now</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>
